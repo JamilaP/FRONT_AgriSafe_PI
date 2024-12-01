@@ -1,8 +1,15 @@
 import { Image, StyleSheet, Platform } from 'react-native';
+import MainStepScreen from '../screens/MainStepScreen';
+
+
 
 export default function HomeScreen() {
   return (
-    <div>Hola Mundo</div>
+    <div>
+      <div>Hola Mundo</div>
+      <MainStepScreen />
+    </div>
+    
   );
 }
 
