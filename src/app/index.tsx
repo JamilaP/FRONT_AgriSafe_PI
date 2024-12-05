@@ -1,10 +1,16 @@
 import { Image, StyleSheet, Platform } from 'react-native';
 import MainStepScreen from '../screens/MainStepScreen';
 import FlowCard from '../components/cards/FlowCard/FlowCard';
+import { Box, Text } from 'native-base';
+import Menu from '../components/menu/Menu';
+import { useState } from 'react';
+import LoginForm from '../components/form/LoginForm';
+import SignUpForm from '../components/form/SignUpForm';
 
 
 
 export default function HomeScreen() {
+  const [activeTab, setActiveTab] = useState('Inicio');
   const handleNavigate = () => {
     console.log('Navigate to next screen');
   };
@@ -13,7 +19,11 @@ export default function HomeScreen() {
     <div>
       <div>Hola Mundo</div>
       {/*<MainStepScreen />*/}
-      <FlowCard onPress={handleNavigate}/>
+      {/*<FlowCard onPress={handleNavigate}/>*/}
+      {/*<Menu activeTab={activeTab} onNavigate={handleNavigate} />*/}
+      {/*<LoginForm />*/}
+      <SignUpForm />
+    
     </div>
     
   );
