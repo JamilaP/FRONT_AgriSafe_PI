@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const FlowStepStyles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    marginHorizontal: 10, // Espaciado entre pasos
+    marginHorizontal: 10,
   },
   icon: {
     width: 40,
@@ -13,6 +13,8 @@ const FlowStepStyles = StyleSheet.create({
   text: {
     fontSize: 14,
     textAlign: 'center',
+    maxWidth: 80,
+    flexWrap: 'wrap', 
   },
 });
 
