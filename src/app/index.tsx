@@ -1,13 +1,14 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
+import MainButton from '../components/buttons/MainButton';
+import UploadButton from '../components/buttons/UploadButton';
+import TakePhotoButton from '../components/buttons/TakePhotoButton';
+import ModalInformation from '../components/Modals/ModalInformation';
 import MainStepScreen from '../screens/MainStepScreen';
 import FlowCard from '../components/cards/FlowCard/FlowCard';
-import { Box, Text } from 'native-base';
 import Menu from '../components/menu/Menu';
-import { useState } from 'react';
 import LoginForm from '../components/form/LoginForm';
 import SignUpForm from '../components/form/SignUpForm';
-
-
 
 export default function HomeScreen() {
   const [activeTab, setActiveTab] = useState('Inicio');
@@ -15,35 +16,64 @@ export default function HomeScreen() {
     console.log('Navigate to next screen');
   };
 
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const handleOpenModal = () => setModalVisible(true);
+  const handleCloseModal = () => setModalVisible(false);
+  const handleConfirmModal = () => {
+    console.log('Confirmado');
+    setModalVisible(false);
+  };
+
   return (
-    <div>
-      <div>Hola Mundo</div>
+    <View style={styles.container}>
+      <Text style={styles.title}>Hola Mundo</Text>
       {/*<MainStepScreen />*/}
       {/*<FlowCard onPress={handleNavigate}/>*/}
       {/*<Menu activeTab={activeTab} onNavigate={handleNavigate} />*/}
       {/*<LoginForm />*/}
       <SignUpForm />
     
-    </div>
-    
+      <View style={styles.buttonContainer}>
+        <MainButton title="Siguiente" onPress={() => console.log('Siguiente')} variant="primary" />
+        <MainButton title="Cancelar" onPress={handleOpenModal} variant="secondary" />
+      </View>
+      <View style={styles.actionContainer}>
+        <UploadButton title="Cargar fotos" onPress={() => console.log('Cargar fotos')} />
+        <TakePhotoButton title="Tomar fotos" onPress={() => console.log('Tomar fotos')} />
+      </View>
+      <ModalInformation
+        visible={isModalVisible}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmModal}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
+  container: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    gap: 8,
+    padding: 16,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 16,
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 16,
+    marginTop: 24,
   },
 });
