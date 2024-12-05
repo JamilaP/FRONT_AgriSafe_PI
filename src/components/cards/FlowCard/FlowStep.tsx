@@ -3,7 +3,7 @@ import { View, Text, Image } from 'react-native';
 import FlowStepStyles from './styles/FlowStepStyles';
 
 interface FlowStepProps {
-  icon: any; // Ruta del ícono (puedes tiparlo mejor según tu configuración)
+  icon: any; 
   text: string;
 }
 

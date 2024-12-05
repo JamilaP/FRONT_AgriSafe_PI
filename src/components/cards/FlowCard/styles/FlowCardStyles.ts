@@ -10,7 +10,8 @@ const FlowCardStyles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,
-    alignItems: 'center', // Centra el contenido horizontalmente
+    alignItems: 'center', 
+    width: '100%', 
   },
   title: {
     fontSize: 18,
@@ -21,7 +22,9 @@ const FlowCardStyles = StyleSheet.create({
   flowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between', 
     marginBottom: 20,
+    width: '100%',
   },
   arrow: {
     fontSize: 24,

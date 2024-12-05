@@ -4,29 +4,32 @@ import FlowCardStyles from './styles/FlowCardStyles';
 import FlowStep from './FlowStep';
 
 
-const FlowCard: React.FC = () => (
+interface FlowCardProps {
+  onPress: () => void; // Asegura que sea una función
+}
+
+const FlowCard: React.FC<FlowCardProps > = ({ onPress }) => (
   <View style={FlowCardStyles.card}>
-    <Text style={FlowCardStyles.title}>Flujo del diagnóstico</Text>
     <View style={FlowCardStyles.flowContainer}>
       {/* Paso 1 */}
       <FlowStep
-        icon={require('@/src/assets/leaf-icon.png')}
+        icon={require('@/assets/images/adaptive-icon.png')}
         text="Tomar una foto"
       />
       <Text style={FlowCardStyles.arrow}>›</Text>
       {/* Paso 2 */}
       <FlowStep
-        icon={require('@/src/assets/clock-icon.png')}
+        icon={require('@/assets/images/react-logo.png')}
         text="Espera el diagnóstico"
       />
       <Text style={FlowCardStyles.arrow}>›</Text>
       {/* Paso 3 */}
       <FlowStep
-        icon={require('@/src/assets/report-icon.png')}
+        icon={require('@/assets/images/icon.png')}
         text="Revisar el reporte"
       />
     </View>
-    <Button title="Comenzar diagnóstico" onPress={() => console.log('Iniciar diagnóstico')} />
+    <Button title="Comenzar diagnóstico" onPress={onPress} />
   </View>
 );
 

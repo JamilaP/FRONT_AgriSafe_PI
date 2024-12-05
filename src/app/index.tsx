@@ -1,13 +1,19 @@
 import { Image, StyleSheet, Platform } from 'react-native';
 import MainStepScreen from '../screens/MainStepScreen';
+import FlowCard from '../components/cards/FlowCard/FlowCard';
 
 
 
 export default function HomeScreen() {
+  const handleNavigate = () => {
+    console.log('Navigate to next screen');
+  };
+
   return (
     <div>
       <div>Hola Mundo</div>
-      <MainStepScreen />
+      {/*<MainStepScreen />*/}
+      <FlowCard onPress={handleNavigate}/>
     </div>
     
   );
