@@ -2,35 +2,37 @@ import { StyleSheet } from 'react-native';
 
 const FlowCardStyles = StyleSheet.create({
   card: {
-    padding: 20,
-    borderRadius: 10,
     backgroundColor: '#fff',
+    borderRadius: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 5,
+    shadowRadius: 4,
     elevation: 3,
-    alignItems: 'center', 
-    width: '100%', 
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
+    padding: 16,
+    marginVertical: 8,
   },
   flowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between', 
-    marginBottom: 20,
-    width: '100%',
+    justifyContent: 'space-between',
+    marginBottom: 16,
   },
   arrow: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#aaa',
+    color: '#00a8cc',
+  },
+  button: {
+    backgroundColor: '#00a8cc',
+    borderRadius: 8,
+    padding: 12,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
-
 export default FlowCardStyles;

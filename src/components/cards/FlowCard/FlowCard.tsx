@@ -1,14 +1,13 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import FlowCardStyles from './styles/FlowCardStyles';
 import FlowStep from './FlowStep';
 
-
 interface FlowCardProps {
-  onPress: () => void; // Asegura que sea una función
+  onPress: () => void; // Navegación
 }
 
-const FlowCard: React.FC<FlowCardProps > = ({ onPress }) => (
+const FlowCard: React.FC<FlowCardProps> = ({ onPress }) => (
   <View style={FlowCardStyles.card}>
     <View style={FlowCardStyles.flowContainer}>
       {/* Paso 1 */}
@@ -29,7 +28,9 @@ const FlowCard: React.FC<FlowCardProps > = ({ onPress }) => (
         text="Revisar el reporte"
       />
     </View>
-    <Button title="Comenzar diagnóstico" onPress={onPress} />
+    <TouchableOpacity style={FlowCardStyles.button} onPress={onPress}>
+      <Text style={FlowCardStyles.buttonText}>Comenzar diagnóstico</Text>
+    </TouchableOpacity>
   </View>
 );
 

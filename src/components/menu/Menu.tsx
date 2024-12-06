@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import styles from './MenuStyles';
+import styles from './Style/MenuStyles';
 
 interface MenuProps {
   onNavigate: (screen: string) => void; // Función para manejar navegación
