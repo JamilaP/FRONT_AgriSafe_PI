@@ -6,6 +6,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import SplashScreen from './src/screens/SplashScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import DiagnosesScreen from './src/screens/DiagnosesScreen';
+import UploadImagenScreen from './src/screens/UploadImagenScren';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -52,6 +53,7 @@ export default function AppNavigator() {
       <Stack.Screen name="Splash" component={SplashScreen} />
       <Stack.Screen name="Main" component={MainTabs} />
       <Stack.Screen name="Diagnoses" component={DiagnosesScreen} />
+      <Stack.Screen name="Upload" component={UploadImagenScreen} />
     </Stack.Navigator>
   );
 }

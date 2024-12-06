@@ -3,8 +3,11 @@ import { View, Text } from 'react-native';
 import FlowCard from '../components/cards/FlowCard/FlowCard';
 import InformationCard from '../components/cards/InformationCards';
 import { homeScreenStyles as styles } from './styles/HomeScreenStyle';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       {/* Sección: Selección de plantas */}
@@ -17,7 +20,7 @@ const HomeScreen = () => {
 
       {/* Sección: Flujo del diagnóstico */}
       <Text style={styles.sectionTitle}>Flujo del diagnóstico</Text>
-      <FlowCard onPress={() => console.log('Iniciar diagnóstico')} />
+      <FlowCard onPress={(screen) => navigation.navigate('Upload')}/>
 
       {/* Sección: Enfermedades */}
       <Text style={styles.sectionTitle}>Enfermedades</Text>
