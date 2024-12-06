@@ -1,75 +1,38 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import styles from './Style/MenuStyles';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons'; // Íconos
+import HomeScreen from '@/src/screens/HomeScreen';
+import DiagnosesScreen from '@/src/screens/DiagnosesScreen';
+import ProfileScreen from '@/src/screens/ProfileScreen';
 
-interface MenuProps {
-  onNavigate: (screen: string) => void; // Función para manejar navegación
-  activeTab: string; // Identifica cuál pestaña está activa
-}
+const Tab = createBottomTabNavigator();
 
-const Menu: React.FC<MenuProps> = ({ onNavigate, activeTab }) => {
+const Menu = () => {
   return (
-    <View style={styles.container}>
-      {/* Opción: Inicio */}
-      <TouchableOpacity style={styles.item} onPress={() => onNavigate('Inicio')}>
-        <Image
-          source={require('@/assets/images/icon.png')}
-          style={[
-            styles.icon,
-            activeTab === 'Inicio' && styles.activeIcon, 
-          ]}
-        />
-        <Text
-          style={[
-            styles.text,
-            activeTab === 'Inicio' && styles.activeText, 
-          ]}
-        >
-          Inicio
-        </Text>
-      </TouchableOpacity>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false, // El encabezado es manejado por MainLayout
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          if (route.name === 'Inicio') iconName = focused ? 'home' : 'home-outline';
+          else if (route.name === 'Diagnósticos') iconName = focused ? 'clipboard' : 'clipboard-outline';
+          else if (route.name === 'Perfil') iconName = focused ? 'person' : 'person-outline';
 
-      {/* Opción: Diagnósticos */}
-      <TouchableOpacity
-        style={styles.item}
-        onPress={() => onNavigate('Diagnósticos')}
-      >
-        <Image
-          source={require('@/assets/images/icon.png')}
-          style={[
-            styles.icon,
-            activeTab === 'Diagnósticos' && styles.activeIcon,
-          ]}
-        />
-        <Text
-          style={[
-            styles.text,
-            activeTab === 'Diagnósticos' && styles.activeText,
-          ]}
-        >
-          Diagnósticos
-        </Text>
-      </TouchableOpacity>
-
-      {/* Opción: Perfil */}
-      <TouchableOpacity style={styles.item} onPress={() => onNavigate('Perfil')}>
-        <Image
-          source={require('@/assets/images/icon.png')}
-          style={[
-            styles.icon,
-            activeTab === 'Perfil' && styles.activeIcon,
-          ]}
-        />
-        <Text
-          style={[
-            styles.text,
-            activeTab === 'Perfil' && styles.activeText,
-          ]}
-        >
-          Perfil
-        </Text>
-      </TouchableOpacity>
-    </View>
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: '#00a8cc',
+        tabBarInactiveTintColor: 'gray',
+        tabBarStyle: {
+          backgroundColor: '#f8f8f8',
+          height: 60,
+          paddingBottom: 5,
+        },
+      })}
+    >
+      <Tab.Screen name="Inicio" component={HomeScreen} />
+      <Tab.Screen name="Diagnósticos" component={DiagnosesScreen} />
+      <Tab.Screen name="Perfil" component={ProfileScreen} />
+    </Tab.Navigator>
   );
 };
 
