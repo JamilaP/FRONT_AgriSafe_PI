@@ -4,10 +4,10 @@ import FlowCardStyles from './styles/FlowCardStyles';
 import FlowStep from './FlowStep';
 
 interface FlowCardProps {
-  onPress: () => void; // Navegación
+  onPress: (screen: string) => void; // Navegación
 }
 
-const FlowCard: React.FC<FlowCardProps> = ({ onPress }) => (
+const FlowCard: React.FC<FlowCardProps> = ({ onPress  }) => (
   <View style={FlowCardStyles.card}>
     <View style={FlowCardStyles.flowContainer}>
       {/* Paso 1 */}
@@ -28,7 +28,8 @@ const FlowCard: React.FC<FlowCardProps> = ({ onPress }) => (
         text="Revisar el reporte"
       />
     </View>
-    <TouchableOpacity style={FlowCardStyles.button} onPress={onPress}>
+    
+    <TouchableOpacity style={FlowCardStyles.button} onPress={() => onPress('Upload')}>
       <Text style={FlowCardStyles.buttonText}>Comenzar diagnóstico</Text>
     </TouchableOpacity>
   </View>
