@@ -1,15 +1,15 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Header from '../components/menu/Header'; // Encabezado global
+import Header from '../components/menu/Header';
 
 interface MainLayoutProps {
-  children: React.ReactNode; // Las pantallas dinámicas
+  children: React.ReactNode;
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <View style={styles.container}>
-      {/* Header fijo */}
+      {/* Header global */}
       <Header />
       {/* Contenido dinámico */}
       <View style={styles.content}>{children}</View>

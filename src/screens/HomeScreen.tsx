@@ -27,7 +27,7 @@ const HomeScreen = () => {
       <InformationCard
         title="Roya"
         description="Causada por el hongo Puccinia polysora, usualmente en las etapas posteriores de crecimiento, en áreas tropicales."
-        imageSource="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Maize_leaf_blight.JPG/640px-Maize_leaf_blight.JPG"
+        imageSource="@/assets/images/Plantas/Corn.webp"
       />
     </View>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons'; // Íconos
+import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from '@/src/screens/HomeScreen';
 import DiagnosesScreen from '@/src/screens/DiagnosesScreen';
 import ProfileScreen from '@/src/screens/ProfileScreen';
@@ -11,7 +11,7 @@ const Menu = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        headerShown: false, // El encabezado es manejado por MainLayout
+        headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           if (route.name === 'Inicio') iconName = focused ? 'home' : 'home-outline';
