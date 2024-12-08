@@ -3,7 +3,10 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import StepIndicatorComponent from '../components/pagination/StepIndicatorComponent';
 import MainButton from '../components/buttons/MainButton';
 
-const RemoveBackground = ({ navigation }: { navigation: any }) => {
+const RemoveBackground = ({ route, navigation }: { route: any; navigation: any }) => {
+  console.log('router',route);
+  const { imageUri } = route.params || {}; // Obtener la URI de la imagen desde los parámetros de navegación
+  console.log('imageUri:', imageUri);
   const labels = ['1', '2', '3', '4'];
 
   return (
@@ -24,13 +27,15 @@ const RemoveBackground = ({ navigation }: { navigation: any }) => {
 
       {/* Imagen */}
       <View style={styles.imageContainer}>
-        <Image
-          source={{
-            uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Maize_leaf_blight.JPG/640px-Maize_leaf_blight.JPG',
-          }}
-          style={styles.image}
-          resizeMode="contain"
-        />
+        {imageUri ? (
+          <Image
+            source={{ uri: imageUri }} // Mostrar la imagen pasada como parámetro
+            style={styles.image}
+            resizeMode="contain"
+          />
+        ) : (
+          <Text style={styles.noImageText}>No se seleccionó ninguna imagen</Text>
+        )}
       </View>
 
       {/* Botones inferiores */}
@@ -90,6 +95,11 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 200,
     borderRadius: 10,
+  },
+  noImageText: {
+    fontSize: 16,
+    color: '#888',
+    fontStyle: 'italic',
   },
   footerButtons: {
     flexDirection: 'row',
