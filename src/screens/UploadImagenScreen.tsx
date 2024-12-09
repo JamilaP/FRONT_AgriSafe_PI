@@ -8,7 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 import ImagePreview from './ImagePreview';
 
 const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
-  const [images, setImages] = useState<string[]>([]); // Almacenar las imágenes seleccionadas o tomadas const { images, setImages } = useContext(ImageContext);
+  const [images, setImages] = useState<string[]>([]);
 
   const labels = ['1', '2', '3', '4'];
 
@@ -21,7 +21,7 @@ const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsMultipleSelection: true, // Permite seleccionar múltiples imágenes
+      allowsMultipleSelection: true, 
       quality: 1,
     });
 

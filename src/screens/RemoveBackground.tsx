@@ -5,7 +5,7 @@ import MainButton from '../components/buttons/MainButton';
 
 const RemoveBackground = ({ route, navigation }: { route: any; navigation: any }) => {
   console.log('router',route);
-  const { imageUri } = route.params || {}; // Obtener la URI de la imagen desde los parámetros de navegación
+  const { imageUri } = route.params || {}; 
   console.log('imageUri:', imageUri);
   const labels = ['1', '2', '3', '4'];
 
@@ -29,7 +29,7 @@ const RemoveBackground = ({ route, navigation }: { route: any; navigation: any }
       <View style={styles.imageContainer}>
         {imageUri ? (
           <Image
-            source={{ uri: imageUri }} // Mostrar la imagen pasada como parámetro
+            source={{ uri: imageUri }}
             style={styles.image}
             resizeMode="contain"
           />

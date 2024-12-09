@@ -14,7 +14,7 @@ const HomeScreen = () => {
       {/* Sección: Selección de plantas */}
       <Text style={styles.sectionTitle}>Selección de plantas</Text>
       <PlantCard
-        imageSource={require('@/assets/images/Plantas/Corn.webp')} // Ruta correcta al ícono de maíz.
+        imageSource={require('@/assets/images/Plantas/Corn.webp')} 
         title="Maíz"
       />
 

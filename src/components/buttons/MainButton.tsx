@@ -5,9 +5,9 @@ import { mainButtonStyles } from './styles/MainButtonStyles';
 type MainButtonProps = {
   title: string;
   onPress: () => void;
-  variant?: 'primary' | 'secondary'; // 'primary' para "Siguiente", 'secondary' para "Cancelar".
+  variant?: 'primary' | 'secondary';
   disabled?: boolean;
-  style?: StyleProp<ViewStyle>; // Permite pasar estilos personalizados.
+  style?: StyleProp<ViewStyle>; 
 };
 
 const MainButton: React.FC<MainButtonProps> = ({
@@ -22,7 +22,7 @@ const MainButton: React.FC<MainButtonProps> = ({
       ? mainButtonStyles.primaryButton
       : mainButtonStyles.secondaryButton,
     disabled && mainButtonStyles.disabledButton,
-    style, // Estilo personalizado.
+    style, 
   ];
 
   const textStyle =
