@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const styles = StyleSheet.create({
+const LoginFormStyles = StyleSheet.create({
   container: {
     padding: 20,
     backgroundColor: '#fff',
@@ -12,31 +12,36 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   input: {
-    borderWidth: 1,
+    height: 50,
     borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 15,
-    fontSize: 16,
-    color: '#333',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    marginBottom: 10,
+    backgroundColor: '#f9f9f9',
   },
   forgotPassword: {
-    fontSize: 14,
     color: '#00a8cc',
     textAlign: 'right',
     marginBottom: 20,
   },
   submitButton: {
     backgroundColor: '#00a8cc',
-    padding: 15,
-    borderRadius: 5,
+    height: 50,
+    justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 8,
   },
   submitButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginBottom: 10,
+  },
 });
 
-export default styles;
+export default LoginFormStyles;
