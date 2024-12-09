@@ -11,10 +11,10 @@ const SegmentationModelScreen = ({ navigation }: { navigation: any }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-      setPercentage(70); // Porcentaje de infección detectado
-    }, 3000); // 3 segundos de espera
+      setPercentage(70); 
+    }, 3000); 
 
-    return () => clearTimeout(timer); // Limpia el temporizador al desmontar
+    return () => clearTimeout(timer); 
   }, []);
 
   return (
@@ -46,15 +46,15 @@ const SegmentationModelScreen = ({ navigation }: { navigation: any }) => {
       <View style={styles.footerButtons}>
         <MainButton
           title="Cancelar"
-          onPress={() => navigation.goBack()} // Regresa a la pantalla anterior
+          onPress={() => navigation.goBack()}
           variant="secondary"
           style={styles.cancelButton}
         />
         <MainButton
           title="Siguiente"
-          onPress={() => navigation.navigate('ResultReportScreen')} // Navega a la siguiente pantalla
+          onPress={() => navigation.navigate('ResultReportScreen')} 
           variant="primary"
-          disabled={isLoading} // Deshabilitado mientras carga
+          disabled={isLoading} 
         />
       </View>
     </View>

@@ -10,10 +10,10 @@ const ClassificationModelScreen = ({ navigation }: { navigation: any }) => {
   // Efecto para simular la carga por 2 segundos
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoading(false); // Habilitar el botón después de 2 segundos
+      setIsLoading(false); 
     }, 2000);
 
-    return () => clearTimeout(timer); // Limpia el temporizador al desmontar
+    return () => clearTimeout(timer); 
   }, []);
 
   return (
@@ -47,9 +47,9 @@ const ClassificationModelScreen = ({ navigation }: { navigation: any }) => {
         />
         <MainButton
           title="Siguiente"
-          onPress={() => navigation.navigate('SegmentationModelScreen')} // Navega a la siguiente pantalla
+          onPress={() => navigation.navigate('SegmentationModelScreen')}
           variant="primary"
-          disabled={isLoading} // El botón se habilita cuando `isLoading` es falso
+          disabled={isLoading} 
         />
       </View>
     </View>

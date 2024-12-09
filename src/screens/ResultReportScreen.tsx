@@ -19,7 +19,7 @@ const ResultReportScreen = ({ navigation }: { navigation: any }) => {
       {/* Botón para salir */}
       <MainButton
         title="Salir"
-        onPress={() => navigation.navigate('Home')} // Regresa a la pantalla principal
+        onPress={() => navigation.navigate('Home')} 
         variant="primary"
         style={styles.exitButton}
       />
