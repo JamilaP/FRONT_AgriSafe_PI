@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import StepIndicatorComponent from '../components/pagination/StepIndicatorComponent';
 import UploadButton from '../components/buttons/UploadButton';
 import TakePhotoButton from '../components/buttons/TakePhotoButton';
 import MainButton from '../components/buttons/MainButton';
 import * as ImagePicker from 'expo-image-picker';
 import ImagePreview from './ImagePreview';
+import { styles } from './styles/UploadImagenScreenStyle';
+import ModalInformation from '../components/Modals/ModalInformation';
 
 const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
   const [images, setImages] = useState<string[]>([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const labels = ['1', '2', '3', '4'];
 
@@ -45,6 +48,27 @@ const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
 
     if (!result.canceled) {
       setImages((prevImages) => [...prevImages, result.assets[0].uri]);
+    }
+  };
+
+  // Función para manejar el botón "Cancelar"
+  const handleCancel = () => {
+    setIsModalVisible(true); // Mostrar el modal
+  };
+
+  // Confirmar la acción en el modal
+  const handleConfirmCancel = () => {
+    setIsModalVisible(false);
+    navigation.navigate('Home'); // Redirigir al usuario al Home
+  };
+
+  // Función para manejar el botón "Siguiente"
+  const handleNext = () => {
+    console.log('Estado de imágenes:', images);
+    if (images.length > 0) {
+      navigation.navigate('RemoveBackground', { imageUri: images[0] });
+    } else {
+      Alert.alert('Error', 'No hay imágenes seleccionadas');
     }
   };
 
@@ -89,90 +113,26 @@ const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
       <View style={styles.footerButtons}>
         <MainButton
           title="Cancelar"
-          onPress={() => console.log('Cancelar')}
+          onPress={handleCancel}
           variant="secondary"
           style={styles.cancelButton}
         />
         <MainButton
           title="Siguiente"
-          onPress={() => {
-            console.log('Estado de imágenes:', images);
-            if (images.length > 0) {
-              navigation.navigate('RemoveBackground', { imageUri: images[0] });
-            } else {
-              console.log('No hay imágenes seleccionadas');
-            }
-          }}
+          onPress={handleNext}
           
           variant="primary"
         />
       </View>
+
+      {/* Modal para confirmar salida */}
+      <ModalInformation
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        onConfirm={handleConfirmCancel}
+      />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  imagesContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    marginTop: 20,
-  },
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#FFFFFF',
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  subtitle: {
-    fontSize: 18,
-    color: '#007ACC',
-  },
-  stepIndicator: {
-    marginVertical: 20,
-  },
-  instruction: {
-    fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'center',
-    marginVertical: 20,
-    color: '#333',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginVertical: 30,
-  },
-  previewContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    marginVertical: 20,
-  },
-  previewImage: {
-    width: 100,
-    height: 100,
-    margin: 5,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-  },
-  footerButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 'auto',
-  },
-  cancelButton: {
-    marginRight: 10,
-  },
-});
 
 export default UploadImagenScreen;
