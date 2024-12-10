@@ -8,6 +8,7 @@ const FlowStepStyles = StyleSheet.create({
   icon: {
     width: 40,
     height: 40,
+    resizeMode: 'contain',
     marginBottom: 5,
   },
   text: {

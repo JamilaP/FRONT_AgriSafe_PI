@@ -19,3 +19,6 @@ API.interceptors.request.use((config) => {
 export const loginUser = (credentials) => API.post('/auth/login', credentials);
 export const registerUser = (userData) => API.post('/auth/register', userData);
 export const getUserProfile = () => API.get('/users/profile');
+export const getDiseases = () => API.get('/plants');
+export const getDiseaseById = (id) => API.get(`/plants/${id}`);
+

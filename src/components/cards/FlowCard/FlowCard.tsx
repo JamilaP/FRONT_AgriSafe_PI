@@ -12,19 +12,19 @@ const FlowCard: React.FC<FlowCardProps> = ({ onPress  }) => (
     <View style={FlowCardStyles.flowContainer}>
       {/* Paso 1 */}
       <FlowStep
-        icon={require('@/assets/images/adaptive-icon.png')}
+        icon={require('@/assets/images/StepsFlowDiagnostic/TakePhoto.png')}
         text="Tomar una foto"
       />
       <Text style={FlowCardStyles.arrow}>›</Text>
       {/* Paso 2 */}
       <FlowStep
-        icon={require('@/assets/images/react-logo.png')}
+        icon={require('@/assets/images/StepsFlowDiagnostic/Waiting.png')}
         text="Espera el diagnóstico"
       />
       <Text style={FlowCardStyles.arrow}>›</Text>
       {/* Paso 3 */}
       <FlowStep
-        icon={require('@/assets/images/icon.png')}
+        icon={require('@/assets/images/StepsFlowDiagnostic/Report.png')}
         text="Revisar el reporte"
       />
     </View>
