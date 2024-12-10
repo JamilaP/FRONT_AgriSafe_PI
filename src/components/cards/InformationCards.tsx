@@ -6,13 +6,17 @@ interface InformationCardProps {
   title: string;
   description: string;
   imageSource: string;
-  onPress?: () => void; // Prop opcional para manejar el evento onPress
+  onPress?: () => void; 
 }
 
 const InformationCard: React.FC<InformationCardProps> = ({ title, description, imageSource, onPress }) => {
+  const isRemoteImage = typeof imageSource === 'string' && imageSource.startsWith('http');
   return (
     <TouchableOpacity onPress={onPress} style={styles.cardContainer}>
-      <Image source={{ uri: imageSource }} style={styles.image} />
+      <Image
+        source={require('@/assets/images/diseases.jpeg')}
+        style={styles.image}
+      />
       <View style={styles.textContainer}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
