@@ -75,7 +75,11 @@ const HomeScreen = () => {
           <InformationCard
             title={item.name}
             description={item.description}
-            imageSource={item.example_images || require('@/assets/images/diseases.jpeg')}
+            imageSource={
+              item.example_images && item.example_images.trim() !== ''
+                ? item.example_images
+                : require('@/assets/images/diseases.jpeg')
+            }
             onPress={() => handleDiseaseSelect(item.disease_id)}
           />
         )}
