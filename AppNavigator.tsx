@@ -17,8 +17,6 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer>
-      {isAuthenticated ? (
-        // Mostrar el Tab Navigator si está autenticado
         <Tab.Navigator
           screenOptions={({ route }) => ({
             headerShown: false,
@@ -42,9 +40,6 @@ const AppNavigator = () => {
           <Tab.Screen name="Diagnósticos" component={DiagnosesStackNavigator} />
           <Tab.Screen name="Perfil" component={ProfileStackNavigator} />
         </Tab.Navigator>
-      ) : (
-        <AuthStackNavigator />
-      )}
     </NavigationContainer>
   );
   /*return (
