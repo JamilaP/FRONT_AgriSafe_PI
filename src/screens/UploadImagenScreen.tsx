@@ -4,10 +4,11 @@ import StepIndicatorComponent from '../components/pagination/StepIndicatorCompon
 import UploadButton from '../components/buttons/UploadButton';
 import TakePhotoButton from '../components/buttons/TakePhotoButton';
 import MainButton from '../components/buttons/MainButton';
-import * as ImagePicker from 'expo-image-picker';
 import ImagePreview from './ImagePreview';
-import { styles } from './styles/UploadImagenScreenStyle';
 import ModalInformation from '../components/Modals/ModalInformation';
+import * as ImagePicker from 'expo-image-picker';
+import { styles } from './styles/UploadImagenScreenStyle';
+import { uploadImageToOBS } from '../utils/uploadImage';
 
 const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
   const [images, setImages] = useState<string[]>([]);
@@ -18,19 +19,18 @@ const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
   const handleImageSelection = (uri: string) => {
     setImages((prevImages) => [...prevImages, uri]);
   };
-  
 
   // Función para cargar fotos desde la galería
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsMultipleSelection: true, 
+      allowsMultipleSelection: true,
       quality: 1,
     });
 
     if (!result.canceled && result.assets.length > 0) {
       const uri = result.assets[0].uri;
-      handleImageSelection(uri); // Añade la URI al estado
+      handleImageSelection(uri);
     }
   };
 
@@ -38,7 +38,7 @@ const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
   const takePhoto = async () => {
     const permission = await ImagePicker.requestCameraPermissionsAsync();
     if (!permission.granted) {
-      alert('Se requiere permiso para acceder a la cámara');
+      Alert.alert('Permiso denegado', 'Se requiere permiso para acceder a la cámara');
       return;
     }
 
@@ -47,24 +47,45 @@ const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
     });
 
     if (!result.canceled) {
-      setImages((prevImages) => [...prevImages, result.assets[0].uri]);
+      handleImageSelection(result.assets[0].uri);
+    }
+  };
+
+  // Subir imágenes a OBS usando la API REST
+  const handleUploadToOBS = async () => {
+    if (images.length === 0) {
+      Alert.alert('Error', 'No hay imágenes seleccionadas');
+      return;
+    }
+
+    try {
+      const uploadPromises = images.map((uri, index) =>
+        uploadImageToOBS(uri, `Diagnosticos/image_${index}.jpg`)
+      );
+      await Promise.all(uploadPromises);
+      Alert.alert('Éxito', 'Todas las imágenes se han subido correctamente');
+      //redirigir a la pantalla RemoveBackground
+      navigation.navigate('RemoveBackground', { imageUri: images[0] });
+      setImages([]); // Limpiar el estado de imágenes después de subirlas
+    } catch (error) {
+      Alert.alert('Error', 'Hubo un problema al subir las imágenes');
+      console.error(error);
     }
   };
 
   // Función para manejar el botón "Cancelar"
   const handleCancel = () => {
-    setIsModalVisible(true); // Mostrar el modal
+    setIsModalVisible(true);
   };
 
   // Confirmar la acción en el modal
   const handleConfirmCancel = () => {
     setIsModalVisible(false);
-    navigation.navigate('Home'); // Redirigir al usuario al Home
+    navigation.navigate('Home');
   };
 
   // Función para manejar el botón "Siguiente"
   const handleNext = () => {
-    console.log('Estado de imágenes:', images);
     if (images.length > 0) {
       navigation.navigate('RemoveBackground', { imageUri: images[0] });
     } else {
@@ -105,9 +126,8 @@ const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
               setImages(updatedImages);
             }}
           />
-      ))}
-</View>
-
+        ))}
+      </View>
 
       {/* Botones inferiores */}
       <View style={styles.footerButtons}>
@@ -118,9 +138,8 @@ const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
           style={styles.cancelButton}
         />
         <MainButton
-          title="Siguiente"
-          onPress={handleNext}
-          
+          title="Subir Imágenes"
+          onPress={handleUploadToOBS}
           variant="primary"
         />
       </View>
