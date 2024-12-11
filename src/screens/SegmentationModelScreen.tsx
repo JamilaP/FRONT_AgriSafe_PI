@@ -3,7 +3,8 @@ import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import StepIndicatorComponent from '../components/pagination/StepIndicatorComponent';
 import MainButton from '../components/buttons/MainButton';
 
-const SegmentationModelScreen = ({ navigation }: { navigation: any }) => {
+const SegmentationModelScreen = ({ route, navigation }: { route: any; navigation: any }) => {
+  const { imageUri, imageUrl } = route.params || {}; // Recibe ambos parámetros
   const labels = ['1', '2', '3', '4'];
   const [isLoading, setIsLoading] = useState(true);
   const [percentage, setPercentage] = useState<number | null>(null);
@@ -16,6 +17,9 @@ const SegmentationModelScreen = ({ navigation }: { navigation: any }) => {
 
     return () => clearTimeout(timer); 
   }, []);
+
+  // Imprimir en consola los valores de imageUri e imageUrl
+  console.log('imageUrl:', imageUrl);
 
   return (
     <View style={styles.container}>
@@ -52,7 +56,9 @@ const SegmentationModelScreen = ({ navigation }: { navigation: any }) => {
         />
         <MainButton
           title="Siguiente"
-          onPress={() => navigation.navigate('ResultReportScreen')} 
+          onPress={() =>
+            navigation.navigate('ResultReportScreen', { imageUri, imageUrl }) // Pasar parámetros
+          }
           variant="primary"
           disabled={isLoading} 
         />
