@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import StepIndicatorComponent from '../components/pagination/StepIndicatorComponent';
 import MainButton from '../components/buttons/MainButton';
 
@@ -13,7 +13,7 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
 
   const labels = ['1', '2', '3', '4'];
 
-  // Llamar al API para crear un diagnóstico
+  // Efecto para simular la carga por 2 segundos
   useEffect(() => {
     const createDiagnosis = async () => {
       try {
@@ -80,14 +80,6 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
         {isLoading && <ActivityIndicator size="large" color="#32CD32" />}
       </View>
 
-      {/* Mostrar información adicional */}
-      {!isLoading && diagnosisId && (
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoText}>ID del diagnóstico creado: {diagnosisId}</Text>
-          <Text style={styles.infoText}>URL de la imagen: {imageUrl}</Text>
-        </View>
-      )}
-
       {/* Botones inferiores */}
       <View style={styles.footerButtons}>
         <MainButton
@@ -98,9 +90,7 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
         />
         <MainButton
           title="Siguiente"
-          onPress={() =>
-            navigation.navigate('SegmentationModelScreen', { imageUri, imageUrl, diagnosisId }) // Pasar ID del diagnóstico
-          }
+          onPress={() => navigation.navigate('SegmentationModelScreen')}
           variant="primary"
           disabled={isLoading} 
         />
@@ -141,14 +131,6 @@ const styles = StyleSheet.create({
   loaderContainer: {
     alignItems: 'center',
     marginVertical: 30,
-  },
-  infoContainer: {
-    marginTop: 20,
-  },
-  infoText: {
-    fontSize: 14,
-    color: '#555',
-    marginBottom: 10,
   },
   footerButtons: {
     flexDirection: 'row',
