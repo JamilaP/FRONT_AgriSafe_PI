@@ -1,63 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, Alert } from 'react-native';
 import StepIndicatorComponent from '../components/pagination/StepIndicatorComponent';
 import MainButton from '../components/buttons/MainButton';
 
-// importar variables de entorno
-import { LOCALHOST, OBS_ENDPOINT } from '@env';
-
 const ClassificationModelScreen = ({ route, navigation }: { route: any; navigation: any }) => {
-  let { imageUri, imageUrl } = route.params || {}; // Recibe parámetros del paso anterior
-  const [isLoading, setIsLoading] = useState(true); // Estado para la carga
-  const [diagnosisId, setDiagnosisId] = useState<number | null>(null); // ID del diagnóstico creado
-
+  const { imageUri } = route.params || {};
   const labels = ['1', '2', '3', '4'];
+  const [isLoading, setIsLoading] = useState(true); // Estado para la carga
+  const [diagnosisResult, setDiagnosisResult] = useState<string | null>(null); // Resultado del diagnóstico
 
-  // Efecto para simular la carga por 2 segundos
   useEffect(() => {
-    const createDiagnosis = async () => {
-      try {
-        setIsLoading(true); // Inicia la carga
+    // Simula el diagnóstico
+    const simulateDiagnosis = setTimeout(() => {
+      setDiagnosisResult('Presenta Roya Común'); // Resultado simulado
+      Alert.alert('Resultado', 'Diagnóstico: Presenta Roya Común'); // Alerta del resultado
+      setIsLoading(false); // Finaliza la carga
+    }, 3000); // Tiempo de espera simulado
 
-        // Contruir el URL object de imageUrl con los datos del .env
-        imageUrl = `${OBS_ENDPOINT}/${imageUrl}`;
-
-        // Datos simulados para diagnóstico (puedes adaptarlos)
-        const diagnosisData = {
-          user_id: 1, // Simulado
-          plant_id: 1, // Simulado
-          imageUrl: imageUrl, // URL de la imagen subida
-        };
-
-        console.log('Diagnosis data:', diagnosisData);
-
-        const response = await fetch(`${LOCALHOST}/diagnoses`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(diagnosisData),
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-          setDiagnosisId(result.id); // Guarda el ID del diagnóstico creado
-          Alert.alert('Éxito', 'Diagnóstico creado exitosamente.');
-        } else {
-          console.error('Error al crear diagnóstico:', result);
-          Alert.alert('Error', 'Hubo un problema al crear el diagnóstico.');
-        }
-      } catch (error) {
-        console.error('Error al llamar al API:', error);
-        Alert.alert('Error', 'Hubo un problema con el servidor.');
-      } finally {
-        setIsLoading(false); // Finaliza la carga
-      }
-    };
-
-    createDiagnosis();
-  }, [imageUrl]); // Se ejecuta al cargar y al cambiar la URL de la imagen
+    return () => clearTimeout(simulateDiagnosis); // Limpia el temporizador
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -75,9 +36,13 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
       {/* Texto de instrucción */}
       <Text style={styles.instruction}>Ejecutando clasificación</Text>
 
-      {/* Indicador de progreso */}
+      {/* Indicador de carga */}
       <View style={styles.loaderContainer}>
-        {isLoading && <ActivityIndicator size="large" color="#32CD32" />}
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#32CD32" />
+        ) : (
+          <Text style={styles.resultText}>{diagnosisResult}</Text> // Muestra el resultado
+        )}
       </View>
 
       {/* Botones inferiores */}
@@ -90,9 +55,9 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
         />
         <MainButton
           title="Siguiente"
-          onPress={() => navigation.navigate('SegmentationModelScreen')}
+          onPress={() => navigation.navigate('SegmentationModelScreen', { imageUri })}
           variant="primary"
-          disabled={isLoading} 
+          disabled={isLoading} // Deshabilita el botón si está cargando
         />
       </View>
     </View>
@@ -129,8 +94,14 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 30,
+  },
+  resultText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#32CD32',
   },
   footerButtons: {
     flexDirection: 'row',

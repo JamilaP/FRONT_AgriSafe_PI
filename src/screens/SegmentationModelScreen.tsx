@@ -3,18 +3,20 @@ import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import StepIndicatorComponent from '../components/pagination/StepIndicatorComponent';
 import MainButton from '../components/buttons/MainButton';
 
-const SegmentationModelScreen = ({ navigation }: { navigation: any }) => {
+const SegmentationModelScreen = ({ route, navigation }: { route: any; navigation: any }) => {
+  const { imageUri } = route.params || {};
   const labels = ['1', '2', '3', '4'];
-  const [isLoading, setIsLoading] = useState(true);
-  const [percentage, setPercentage] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(true); // Estado para la carga
+  const [infectionPercentage, setInfectionPercentage] = useState<number | null>(null); // Porcentaje de infección
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      setPercentage(70); 
-    }, 3000); 
+    // Simula la detección del porcentaje de infección
+    const simulateSegmentation = setTimeout(() => {
+      setInfectionPercentage(50); // Porcentaje simulado
+      setIsLoading(false); // Finaliza la carga
+    }, 3000); // Tiempo de espera simulado
 
-    return () => clearTimeout(timer); 
+    return () => clearTimeout(simulateSegmentation); // Limpia el temporizador
   }, []);
 
   return (
@@ -33,12 +35,12 @@ const SegmentationModelScreen = ({ navigation }: { navigation: any }) => {
       {/* Texto de instrucción */}
       <Text style={styles.instruction}>Detectando porcentaje de infección</Text>
 
-      {/* Loading o Resultado */}
+      {/* Indicador de carga o porcentaje */}
       <View style={styles.resultContainer}>
         {isLoading ? (
           <ActivityIndicator size="large" color="#00a8cc" />
         ) : (
-          <Text style={styles.percentage}>{percentage}%</Text>
+          <Text style={styles.percentage}>Porcentaje de infección: {infectionPercentage}%</Text>
         )}
       </View>
 
@@ -52,9 +54,11 @@ const SegmentationModelScreen = ({ navigation }: { navigation: any }) => {
         />
         <MainButton
           title="Siguiente"
-          onPress={() => navigation.navigate('ResultReportScreen')} 
+          onPress={() =>
+            navigation.navigate('ResultReportScreen', { imageUri, infectionPercentage })
+          }
           variant="primary"
-          disabled={isLoading} 
+          disabled={isLoading} // Deshabilita el botón si está cargando
         />
       </View>
     </View>
@@ -96,9 +100,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   percentage: {
-    fontSize: 48,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#32CD32',
   },
   footerButtons: {
     flexDirection: 'row',
