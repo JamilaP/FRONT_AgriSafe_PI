@@ -1,20 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import StepIndicatorComponent from '../components/pagination/StepIndicatorComponent';
 import MainButton from '../components/buttons/MainButton';
 
-const ClassificationModelScreen = ({ navigation }: { navigation: any }) => {
-  const [isLoading, setIsLoading] = useState(true); // Estado para controlar la carga
+const ClassificationModelScreen = ({ route, navigation }: { route: any; navigation: any }) => {
+  let { imageUri, imageUrl } = route.params || {}; // Recibe parámetros del paso anterior
+  const [isLoading, setIsLoading] = useState(true); // Estado para la carga
+  const [diagnosisId, setDiagnosisId] = useState<number | null>(null); // ID del diagnóstico creado
+
   const labels = ['1', '2', '3', '4'];
 
-  // Efecto para simular la carga por 2 segundos
+  // Llamar al API para crear un diagnóstico
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false); 
-    }, 2000);
+    const createDiagnosis = async () => {
+      try {
+        setIsLoading(true); // Inicia la carga
 
-    return () => clearTimeout(timer); 
-  }, []);
+        // Contruir el URL object de imageUrl con los datos del .env
+        imageUrl = 'https://agrisafe.obs.la-south-2.myhuaweicloud.com/' + imageUrl;
+
+        // Datos simulados para diagnóstico (puedes adaptarlos)
+        const diagnosisData = {
+          user_id: 1, // Simulado
+          plant_id: 1, // Simulado
+          imageUrl: imageUrl, // URL de la imagen subida
+        };
+
+        console.log('Diagnosis data:', diagnosisData);
+
+        const response = await fetch('http://192.168.18.221:3000/api/diagnoses', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(diagnosisData),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          setDiagnosisId(result.id); // Guarda el ID del diagnóstico creado
+          Alert.alert('Éxito', 'Diagnóstico creado exitosamente.');
+        } else {
+          console.error('Error al crear diagnóstico:', result);
+          Alert.alert('Error', 'Hubo un problema al crear el diagnóstico.');
+        }
+      } catch (error) {
+        console.error('Error al llamar al API:', error);
+        Alert.alert('Error', 'Hubo un problema con el servidor.');
+      } finally {
+        setIsLoading(false); // Finaliza la carga
+      }
+    };
+
+    createDiagnosis();
+  }, [imageUrl]); // Se ejecuta al cargar y al cambiar la URL de la imagen
 
   return (
     <View style={styles.container}>
@@ -37,6 +77,14 @@ const ClassificationModelScreen = ({ navigation }: { navigation: any }) => {
         {isLoading && <ActivityIndicator size="large" color="#32CD32" />}
       </View>
 
+      {/* Mostrar información adicional */}
+      {!isLoading && diagnosisId && (
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoText}>ID del diagnóstico creado: {diagnosisId}</Text>
+          <Text style={styles.infoText}>URL de la imagen: {imageUrl}</Text>
+        </View>
+      )}
+
       {/* Botones inferiores */}
       <View style={styles.footerButtons}>
         <MainButton
@@ -47,7 +95,9 @@ const ClassificationModelScreen = ({ navigation }: { navigation: any }) => {
         />
         <MainButton
           title="Siguiente"
-          onPress={() => navigation.navigate('SegmentationModelScreen')}
+          onPress={() =>
+            navigation.navigate('SegmentationModelScreen', { imageUri, imageUrl, diagnosisId }) // Pasar ID del diagnóstico
+          }
           variant="primary"
           disabled={isLoading} 
         />
@@ -88,6 +138,14 @@ const styles = StyleSheet.create({
   loaderContainer: {
     alignItems: 'center',
     marginVertical: 30,
+  },
+  infoContainer: {
+    marginTop: 20,
+  },
+  infoText: {
+    fontSize: 14,
+    color: '#555',
+    marginBottom: 10,
   },
   footerButtons: {
     flexDirection: 'row',
