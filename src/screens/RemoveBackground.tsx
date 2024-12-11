@@ -6,7 +6,7 @@ import MainButton from '../components/buttons/MainButton';
 const RemoveBackground = ({ route, navigation }: { route: any; navigation: any }) => {
   const { imageUri, imageUrl } = route.params || {}; // Recibe ambos parámetros
 
-  const labels = ['1', '2', '3', '4'];
+  const labels = ['1', '2', '3'];
 
   // Imprimir en consola los valores de imageUri e imageUrl
   console.log('imageUrl:', imageUrl);

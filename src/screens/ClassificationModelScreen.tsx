@@ -9,9 +9,12 @@ import { LOCALHOST, OBS_ENDPOINT } from '@env';
 const ClassificationModelScreen = ({ route, navigation }: { route: any; navigation: any }) => {
   let { imageUri, imageUrl } = route.params || {}; // Recibe parámetros del paso anterior
   const [isLoading, setIsLoading] = useState(true); // Estado para la carga
-  const [diagnosisId, setDiagnosisId] = useState<number | null>(null); // ID del diagnóstico creado
-
-  const labels = ['1', '2', '3', '4'];
+  const [diagnosisResult, setDiagnosisResult] = useState<any>(null); // Datos del diagnóstico
+  const [infection_percentage, setInfection_percentage] = useState<number>(0); // Porcentaje de infección
+  const [severity, setSeverity] = useState<string>(''); // Grado de severidad
+  // para un entero disease
+  const [disease_id, setDisease_id] = useState<number>(0); // Id de la enfermedad
+  const labels = ['1', '2', '3'];
 
   // Llamar al API para crear un diagnóstico
   useEffect(() => {
@@ -19,14 +22,13 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
       try {
         setIsLoading(true); // Inicia la carga
 
-        // Contruir el URL object de imageUrl con los datos del .env
-        imageUrl = `${OBS_ENDPOINT}/${imageUrl}`;
+        // Construir el URL de la imagen con los datos del .env
+        const completeImageUrl = `${OBS_ENDPOINT}/${imageUrl}`;
 
-        // Datos simulados para diagnóstico (puedes adaptarlos)
         const diagnosisData = {
           user_id: 1, // Simulado
           plant_id: 1, // Simulado
-          imageUrl: imageUrl, // URL de la imagen subida
+          imageUrl: completeImageUrl, // URL de la imagen subida
         };
 
         console.log('Diagnosis data:', diagnosisData);
@@ -42,7 +44,14 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
         const result = await response.json();
 
         if (response.ok) {
-          setDiagnosisId(result.id); // Guarda el ID del diagnóstico creado
+          setDiagnosisResult(result); // Guarda el resultado completo
+          setInfection_percentage(result.infection_percentage); // Guarda el porcentaje de infección
+          setSeverity(result.background_removed_image); // string convertido a float
+          setDisease_id(result.disease_id); // Guarda el id de la enfermedad
+          console.log('enfermedad:', result.disease_id);
+          console.log('Porcentaje :', result.infection_percentage);
+          console.log('grado de severidad:', result.background_removed_image);
+
           Alert.alert('Éxito', 'Diagnóstico creado exitosamente.');
         } else {
           console.error('Error al crear diagnóstico:', result);
@@ -73,20 +82,27 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
       </View>
 
       {/* Texto de instrucción */}
-      <Text style={styles.instruction}>Ejecutando clasificación</Text>
+      <Text style={styles.instruction}>
+        {isLoading ? 'Analisando la enfermedad de la roya...' : 'Resultado del análisis'}
+      </Text>
 
       {/* Indicador de progreso */}
       <View style={styles.loaderContainer}>
-        {isLoading && <ActivityIndicator size="large" color="#32CD32" />}
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#32CD32" />
+        ) : disease_id === 1 ? (
+          <View style={styles.resultContainer}>
+            <Text style={styles.resultText}>
+              Porcentaje de Infección: {infection_percentage}%
+            </Text>
+            <Text style={styles.resultText}>
+              Grado de Severidad: { severity}
+            </Text>
+          </View>
+        ) : (
+          <Text style={styles.resultText}>No esta presente la enfermedad de la roya en las imagenes brindadas</Text>
+        )}
       </View>
-
-      {/* Mostrar información adicional */}
-      {!isLoading && diagnosisId && (
-        <View style={styles.infoContainer}>
-          <Text style={styles.infoText}>ID del diagnóstico creado: {diagnosisId}</Text>
-          <Text style={styles.infoText}>URL de la imagen: {imageUrl}</Text>
-        </View>
-      )}
 
       {/* Botones inferiores */}
       <View style={styles.footerButtons}>
@@ -99,10 +115,10 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
         <MainButton
           title="Siguiente"
           onPress={() =>
-            navigation.navigate('SegmentationModelScreen', { imageUri, imageUrl, diagnosisId }) // Pasar ID del diagnóstico
+            navigation.navigate('SegmentationModelScreen', { imageUri, imageUrl })
           }
           variant="primary"
-          disabled={isLoading} 
+          disabled={isLoading || !diagnosisResult} // Desactivar si está cargando o no hay resultado
         />
       </View>
     </View>
@@ -142,13 +158,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 30,
   },
-  infoContainer: {
+  resultContainer: {
+    alignItems: 'center',
     marginTop: 20,
   },
-  infoText: {
-    fontSize: 14,
+  resultText: {
+    fontSize: 16,
     color: '#555',
     marginBottom: 10,
+    textAlign: 'center',
+  },
+  errorText: {
+    fontSize: 16,
+    color: '#FF0000',
+    textAlign: 'center',
   },
   footerButtons: {
     flexDirection: 'row',

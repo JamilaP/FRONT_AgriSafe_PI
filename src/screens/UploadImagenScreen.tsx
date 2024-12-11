@@ -15,7 +15,7 @@ const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
   const [uploadedUrls, setUploadedUrls] = useState<string[]>([]); // URLs de imágenes subidas
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const labels = ['1', '2', '3', '4'];
+  const labels = ['1', '2', '3'];
 
   const handleImageSelection = (uri: string) => {
     setImages((prevImages) => [...prevImages, uri]);

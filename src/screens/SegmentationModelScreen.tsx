@@ -5,7 +5,7 @@ import MainButton from '../components/buttons/MainButton';
 
 const SegmentationModelScreen = ({ route, navigation }: { route: any; navigation: any }) => {
   const { imageUri, imageUrl } = route.params || {}; // Recibe ambos parámetros
-  const labels = ['1', '2', '3', '4'];
+  const labels = ['1', '2', '3'];
   const [isLoading, setIsLoading] = useState(true);
   const [percentage, setPercentage] = useState<number | null>(null);
 
