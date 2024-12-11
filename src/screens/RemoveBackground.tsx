@@ -4,10 +4,12 @@ import StepIndicatorComponent from '../components/pagination/StepIndicatorCompon
 import MainButton from '../components/buttons/MainButton';
 
 const RemoveBackground = ({ route, navigation }: { route: any; navigation: any }) => {
-  console.log('router',route);
-  const { imageUri } = route.params || {}; 
-  console.log('imageUri:', imageUri);
+  const { imageUri, imageUrl } = route.params || {}; // Recibe ambos parámetros
+
   const labels = ['1', '2', '3', '4'];
+
+  // Imprimir en consola los valores de imageUri e imageUrl
+  console.log('imageUrl:', imageUrl);
 
   return (
     <View style={styles.container}>
@@ -27,9 +29,9 @@ const RemoveBackground = ({ route, navigation }: { route: any; navigation: any }
 
       {/* Imagen */}
       <View style={styles.imageContainer}>
-        {imageUri ? (
+        {imageUrl ? (
           <Image
-            source={{ uri: imageUri }}
+            source={{ uri: imageUrl }}
             style={styles.image}
             resizeMode="contain"
           />
@@ -48,7 +50,7 @@ const RemoveBackground = ({ route, navigation }: { route: any; navigation: any }
         />
         <MainButton
           title="Siguiente"
-          onPress={() => navigation.navigate('ClassificationModelScreen')}
+          onPress={() => navigation.navigate('ClassificationModelScreen', { imageUri, imageUrl })} // Pasar parámetros
           variant="primary"
         />
       </View>
