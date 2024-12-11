@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import StepIndicatorComponent from '../components/pagination/StepIndicatorComponent';
 import MainButton from '../components/buttons/MainButton';
 
+// importar variables de entorno
+import { LOCALHOST, OBS_ENDPOINT } from '@env';
+
 const ClassificationModelScreen = ({ route, navigation }: { route: any; navigation: any }) => {
   let { imageUri, imageUrl } = route.params || {}; // Recibe parámetros del paso anterior
   const [isLoading, setIsLoading] = useState(true); // Estado para la carga
@@ -17,7 +20,7 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
         setIsLoading(true); // Inicia la carga
 
         // Contruir el URL object de imageUrl con los datos del .env
-        imageUrl = 'https://agrisafe.obs.la-south-2.myhuaweicloud.com/' + imageUrl;
+        imageUrl = `${OBS_ENDPOINT}/${imageUrl}`;
 
         // Datos simulados para diagnóstico (puedes adaptarlos)
         const diagnosisData = {
@@ -28,7 +31,7 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
 
         console.log('Diagnosis data:', diagnosisData);
 
-        const response = await fetch('http://192.168.18.221:3000/api/diagnoses', {
+        const response = await fetch(`${LOCALHOST}/diagnoses`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
