@@ -1,4 +1,5 @@
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Importa AsyncStorage
 import { BASE_URL } from '@env';
 
 // Configura Axios con la URL base de la API
@@ -7,10 +8,14 @@ const API = axios.create({
 });
 
 // Interceptor para añadir el token a todas las solicitudes protegidas
-API.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token'); // Obtén el token del almacenamiento local
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+API.interceptors.request.use(async (config) => {
+  try {
+    const token = await AsyncStorage.getItem('token'); // Obtén el token del almacenamiento local
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  } catch (error) {
+    console.error('Error al obtener el token del AsyncStorage:', error);
   }
   return config;
 });
@@ -27,4 +32,3 @@ export const updateUserProfile = (formData) =>
   });
 export const getDiseases = () => API.get('/plants');
 export const getDiseaseById = (id) => API.get(`/plants/${id}`);
-

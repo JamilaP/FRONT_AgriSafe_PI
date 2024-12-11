@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { View, Text, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Importa AsyncStorage
 import LoginForm from '../components/form/LoginForm';
 import MainButton from '../components/buttons/MainButton';
 import { logInStyles as styles } from './styles/LogInScreenStyle';
@@ -13,11 +14,12 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     try {
       const response = await loginUser({ email, password });
       const { token } = response.data;
-      // Guarda el token en AsyncStorage o SecureStore
-      await localStorage.setItem('token', token);
+      // Guarda el token en AsyncStorage
+      await AsyncStorage.setItem('token', token);
       login(token);
       Alert.alert('Inicio de sesión exitoso', 'Bienvenido a la aplicación');
-      //navigation.navigate('Home'); // Navegar a la pantalla principal
+      // Navega a la pantalla principal
+      navigation.navigate('Home');
       console.log('Inicio de sesión exitoso');
     } catch (error) {
       Alert.alert(
