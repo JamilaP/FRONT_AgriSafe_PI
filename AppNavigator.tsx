@@ -17,6 +17,8 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer>
+      {isAuthenticated ? (
+        // Navegador principal con pestañas (después de autenticarse)
         <Tab.Navigator
           screenOptions={({ route }) => ({
             headerShown: false,
@@ -33,13 +35,21 @@ const AppNavigator = () => {
             },
             tabBarActiveTintColor: '#00a8cc',
             tabBarInactiveTintColor: 'gray',
-            tabBarStyle: { backgroundColor: '#f8f8f8', height: 60, paddingBottom: 5 },
+            tabBarStyle: {
+              backgroundColor: '#f8f8f8',
+              height: 60,
+              paddingBottom: 5,
+            },
           })}
         >
           <Tab.Screen name="Inicio" component={HomeStackNavigator} />
           <Tab.Screen name="Diagnósticos" component={DiagnosesStackNavigator} />
           <Tab.Screen name="Perfil" component={ProfileStackNavigator} />
         </Tab.Navigator>
+      ) : (
+        // Navegador para autenticación (antes de autenticarse)
+        <AuthStackNavigator />
+      )}
     </NavigationContainer>
   );
   /*return (
