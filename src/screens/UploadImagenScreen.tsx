@@ -12,7 +12,6 @@ import { uploadImageToOBS } from '../utils/uploadImage';
 
 const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
   const [images, setImages] = useState<string[]>([]);
-  const [uploadedUrls, setUploadedUrls] = useState<string[]>([]); // URLs de imágenes subidas
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const labels = ['1', '2', '3', '4'];
@@ -60,17 +59,13 @@ const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
     }
 
     try {
-      const uploadPromises = images.map(async (uri) => {
-        const url = await uploadImageToOBS(uri); // Retorna el URL tras subir la imagen
-        return url; // Guarda el URL devuelto
-      });
-
-      const urls = await Promise.all(uploadPromises); // Espera a que todas las imágenes se suban
-      setUploadedUrls(urls); // Guarda los URLs en el estado
+      const uploadPromises = images.map((uri, index) =>
+        uploadImageToOBS(uri, `Diagnosticos/image_${index}.jpg`)
+      );
+      await Promise.all(uploadPromises);
       Alert.alert('Éxito', 'Todas las imágenes se han subido correctamente');
-
-      // Redirigir a la siguiente pantalla con el primer URL
-      navigation.navigate('RemoveBackground', { imageUri: images[0], imageUrl: urls[0] });
+      //redirigir a la pantalla RemoveBackground
+      navigation.navigate('RemoveBackground', { imageUri: images[0] });
       setImages([]); // Limpiar el estado de imágenes después de subirlas
     } catch (error) {
       Alert.alert('Error', 'Hubo un problema al subir las imágenes');
@@ -87,6 +82,15 @@ const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
   const handleConfirmCancel = () => {
     setIsModalVisible(false);
     navigation.navigate('Home');
+  };
+
+  // Función para manejar el botón "Siguiente"
+  const handleNext = () => {
+    if (images.length > 0) {
+      navigation.navigate('RemoveBackground', { imageUri: images[0] });
+    } else {
+      Alert.alert('Error', 'No hay imágenes seleccionadas');
+    }
   };
 
   return (
