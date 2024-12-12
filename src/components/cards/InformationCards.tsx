@@ -14,7 +14,7 @@ const InformationCard: React.FC<InformationCardProps> = ({ title, description, i
   return (
     <TouchableOpacity onPress={onPress} style={styles.cardContainer}>
       <Image
-        source={require('@/assets/images/diseases.jpeg')}
+        source= {isRemoteImage ? { uri: imageSource } : imageSource}
         style={styles.image}
       />
       <View style={styles.textContainer}>

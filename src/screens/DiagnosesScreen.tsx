@@ -1,55 +1,94 @@
-import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, ActivityIndicator, FlatList, Alert } from 'react-native';
 import InformationCard from '../components/cards/InformationCards';
+import DiagnosisModal from '../components/Modals/ModalDiagnosis';
 import { diagnosesScreenStyles as styles } from './styles/DiagnosesScreenStyle';
+import { getDiagnosesByUserId, getDiagnosisById } from '../services/api';
 
-const evaluations = [
-  {
-    id: 1,
-    title: 'Evaluación - Cultivo #1',
-    description: 'Enfermedad: Roya\nGrado de severidad: 3\nFecha: 20-11-24',
-    imageSource: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Maize_leaf_blight.JPG/640px-Maize_leaf_blight.JPG',
-  },
-  {
-    id: 2,
-    title: 'Evaluación - Cultivo #2',
-    description: 'Enfermedad: Roya\nGrado de severidad: 2\nFecha: 18-11-24',
-    imageSource: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Maize_leaf_blight.JPG/640px-Maize_leaf_blight.JPG',
-  },
-  {
-    id: 3,
-    title: 'Evaluación - Cultivo #3',
-    description: 'Enfermedad: No presenta\nGrado de severidad: 0\nFecha: 16-11-24',
-    imageSource: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Maize_leaf_blight.JPG/640px-Maize_leaf_blight.JPG',
-  },
-];
+interface Diagnosis {
+  diagnosis_id: number;
+  disease_name: string | null;
+  infection_percentage: number;
+  created_at: string;
+  image: string | null;
+}
 
 const DiagnosesScreen = () => {
-  return (
-    <ScrollView style={styles.container}>
-      {/* Encabezado */}
-      <Text style={styles.title}>Histórico de evaluaciones</Text>
+  const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedDiagnosis, setSelectedDiagnosis] = useState(null); // Estado para el diagnóstico seleccionado
+  const [isModalVisible, setModalVisible] = useState(false);
 
-      {/* Ícono representativo */}
-      <View style={styles.iconContainer}>
-        <InformationCard
-          title="Maíz"
-          description="Protege tu cultivo de maíz con nuestras herramientas."
-          imageSource="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Maize_leaf_blight.JPG/640px-Maize_leaf_blight.JPG"
-        />
+  useEffect(() => {
+    const fetchDiagnoses = async () => {
+      try {
+        const userId = 1; // Cambia esto según tu lógica
+        const response = await getDiagnosesByUserId(userId);
+        //console.log('Diagnósticos:', response.data);
+        setDiagnoses(response.data);
+      } catch (error) {
+        console.error('Error al obtener los diagnósticos:', error);
+        Alert.alert('Error', 'No se pudo cargar el historial de diagnósticos.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDiagnoses();
+  }, []);
+
+  const handleDiagnosisSelect = async (diagnosisId) => {
+    try {
+      setLoading(true); // Muestra el indicador de carga
+      const response = await getDiagnosisById(diagnosisId); // Llama a la API
+      setSelectedDiagnosis(response.data[0]); // Establece el diagnóstico en el estado
+      setModalVisible(true); // Muestra el modal
+    } catch (error) {
+      console.error('Error al obtener el diagnóstico:', error);
+      Alert.alert('Error', 'No se pudo cargar los detalles del diagnóstico.');
+    } finally {
+      setLoading(false); // Oculta el indicador de carga
+    }
+  };
+  
+
+  const handleModalClose = () => {
+    setModalVisible(false); // Oculta el modal
+    setSelectedDiagnosis(null); // Limpia el diagnóstico seleccionado
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#00a8cc" />
       </View>
+    );
+  }
 
-      {/* Historial de evaluaciones */}
-      {evaluations.map((evaluation) => (
-        <View key={evaluation.id} style={styles.evaluationContainer}>
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Histórico de evaluaciones</Text>
+      <FlatList
+        data={diagnoses}
+        keyExtractor={(item) => item.diagnosis_id.toString()}
+        renderItem={({ item }) => (
           <InformationCard
-            title={evaluation.title}
-            description={evaluation.description}
-            imageSource={evaluation.imageSource}
+            title={`Diagnóstico ${item.diagnosis_id}`}
+            description={`Enfermedad: ${item.disease_name || 'No detectada'}\nPorcentaje de infección: ${item.infection_percentage}%`}
+            imageSource={
+              item.image ||
+              'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Maize_leaf_blight.JPG/640px-Maize_leaf_blight.JPG'
+            }
+            onPress={() => handleDiagnosisSelect(item.diagnosis_id)}
           />
-        </View>
-      ))}
-    </ScrollView>
+        )}
+      />
+      <DiagnosisModal
+        visible={isModalVisible}
+        diagnosis={selectedDiagnosis}
+        onClose={handleModalClose}
+      />
+    </View>
   );
 };
 
