@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  Alert,
+  Image,
+} from 'react-native';
 import StepIndicatorComponent from '../components/pagination/StepIndicatorComponent';
+import SeverityIndicator from '../components/SeverityIndicator';
 import MainButton from '../components/buttons/MainButton';
 
 // importar variables de entorno
@@ -12,7 +20,6 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
   const [diagnosisResult, setDiagnosisResult] = useState<any>(null); // Datos del diagnóstico
   const [infection_percentage, setInfection_percentage] = useState<number>(0); // Porcentaje de infección
   const [severity, setSeverity] = useState<string>(''); // Grado de severidad
-  // para un entero disease
   const [disease_id, setDisease_id] = useState<number>(0); // Id de la enfermedad
   const labels = ['1', '2', '3'];
 
@@ -48,9 +55,6 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
           setInfection_percentage(result.infection_percentage); // Guarda el porcentaje de infección
           setSeverity(result.background_removed_image); // string convertido a float
           setDisease_id(result.disease_id); // Guarda el id de la enfermedad
-          console.log('enfermedad:', result.disease_id);
-          console.log('Porcentaje :', result.infection_percentage);
-          console.log('grado de severidad:', result.background_removed_image);
 
           Alert.alert('Éxito', 'Diagnóstico creado exitosamente.');
         } else {
@@ -72,7 +76,7 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
     <View style={styles.container}>
       {/* Header con título y subtítulo */}
       <View style={styles.header}>
-        <Text style={styles.title}>Evaluación</Text>
+        <Text style={styles.title}>Diagnóstico</Text>
         <Text style={styles.subtitle}>Maíz</Text>
       </View>
 
@@ -83,7 +87,7 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
 
       {/* Texto de instrucción */}
       <Text style={styles.instruction}>
-        {isLoading ? 'Analisando la enfermedad de la roya...' : 'Resultado del análisis'}
+        {isLoading ? 'Analizando la enfermedad de la roya...' : 'Resultado del análisis'}
       </Text>
 
       {/* Indicador de progreso */}
@@ -92,15 +96,24 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
           <ActivityIndicator size="large" color="#32CD32" />
         ) : disease_id === 1 ? (
           <View style={styles.resultContainer}>
+            <Text style={styles.resultText}>La hoja de la planta presenta la enfermedad de la roya.</Text>
             <Text style={styles.resultText}>
-              Porcentaje de Infección: {infection_percentage}%
+              Porcentaje afectado: {infection_percentage}%
             </Text>
-            <Text style={styles.resultText}>
-              Grado de Severidad: { severity}
-            </Text>
+            <Text style={styles.resultText}>Grado de Severidad:</Text>
+            <SeverityIndicator />
           </View>
         ) : (
-          <Text style={styles.resultText}>No esta presente la enfermedad de la roya en las imagenes brindadas</Text>
+          <View style={styles.resultContainer}>
+            <Text style={styles.resultText}>
+              Las hojas del maíz no presentan la enfermedad de la roya.
+            </Text>
+            <Image
+              source={require('../../assets/images/Plantas/MaizSafe.webp')}
+              style={styles.image}
+              resizeMode="contain"
+            />
+          </View>
         )}
       </View>
 
@@ -115,7 +128,7 @@ const ClassificationModelScreen = ({ route, navigation }: { route: any; navigati
         <MainButton
           title="Siguiente"
           onPress={() =>
-            navigation.navigate('SegmentationModelScreen', { imageUri, imageUrl })
+            navigation.navigate('ResultReportScreen', { imageUri, imageUrl })
           }
           variant="primary"
           disabled={isLoading || !diagnosisResult} // Desactivar si está cargando o no hay resultado
@@ -168,10 +181,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
   },
-  errorText: {
-    fontSize: 16,
-    color: '#FF0000',
-    textAlign: 'center',
+  image: {
+    width: 200,
+    height: 200,
+    marginTop: 20,
   },
   footerButtons: {
     flexDirection: 'row',
