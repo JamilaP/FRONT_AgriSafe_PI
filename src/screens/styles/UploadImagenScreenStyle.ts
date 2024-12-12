@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
       backgroundColor: '#FFFFFF',
     },
     header: {
-      alignItems: 'center',
+      marginHorizontal: 10,
       marginBottom: 20,
     },
     title: {
@@ -60,6 +60,21 @@ export const styles = StyleSheet.create({
       marginTop: 'auto',
     },
     cancelButton: {
+      marginRight: 10,
+    },
+    imageHeader: {
+      width: 60,
+      height: 60,
+      borderRadius: 30,
+      borderWidth: 2,
+      borderColor: '#00a8cc',
+      marginBottom: 4,
+    },
+    headerEvaluation: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 20,
       marginRight: 10,
     },
   });

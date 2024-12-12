@@ -4,18 +4,18 @@ import { View, Text, StyleSheet } from 'react-native';
 
 const SeverityIndicator = () => {
   const data = [
-    { grade: 0, range: '0%' },
-    { grade: 1, range: '0 - 5%' },
-    { grade: 2, range: '5 - 10%' },
-    { grade: 3, range: '10 - 25%' },
-    { grade: 4, range: '25 - 50%' },
-    { grade: 5, range: '> 50%' },
+    { grade: 0, range: '0%' , color: '#649726'},
+    { grade: 1, range: '0 - 5%', color: '#7FBE31' },
+    { grade: 2, range: '5 - 10%', color: '#FBE36A' },
+    { grade: 3, range: '10 - 25%', color: '#F99628' },
+    { grade: 4, range: '25 - 50%', color: '#E36622' },
+    { grade: 5, range: '> 50%', color: '#DC2D2D' },
   ];
 
   return (
     <View style={styles.container}>
       {data.map((item) => (
-        <View key={item.grade} style={styles.item}>
+        <View key={item.grade} style={[styles.item, { backgroundColor: item.color }]}>
           <Text style={styles.gradeText}>{item.grade}</Text>
           <Text style={styles.rangeText}>{item.range}</Text>
         </View>
@@ -29,22 +29,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#f0f8ff', // Color de fondo sutil
-    paddingVertical: 10,
     borderRadius: 8,
     marginVertical: 10,
   },
   item: {
     alignItems: 'center',
+    minWidth: 60,
   },
   gradeText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#0056b3', // Azul oscuro
+    color: '#000',
   },
   rangeText: {
     fontSize: 14,
-    color: '#0073e6', // Azul claro
+    color: '#000',
   },
 });
 

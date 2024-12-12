@@ -21,7 +21,7 @@ API.interceptors.request.use(async (config) => {
   }
   return config;
 });
-
+ 
 // Funciones para interactuar con el backend
 export const loginUser = (credentials) => API.post('/auth/login', credentials);
 export const registerUser = (userData) => API.post('/auth/register', userData);

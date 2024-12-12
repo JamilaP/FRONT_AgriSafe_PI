@@ -5,6 +5,7 @@ export const diagnosesScreenStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F9F9F9', // Fondo claro para la pantalla
     padding: 16, // Espaciado alrededor del contenido
+    paddingTop: 70,
   },
   title: {
     fontSize: 20, // Tamaño de fuente para el título

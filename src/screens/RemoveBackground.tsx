@@ -1,22 +1,34 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import StepIndicatorComponent from '../components/pagination/StepIndicatorComponent';
-import MainButton from '../components/buttons/MainButton';
+import React from "react";
+import { View, Text, Image, StyleSheet } from "react-native";
+import StepIndicatorComponent from "../components/pagination/StepIndicatorComponent";
+import MainButton from "../components/buttons/MainButton";
 
-const RemoveBackground = ({ route, navigation }: { route: any; navigation: any }) => {
+const RemoveBackground = ({
+  route,
+  navigation,
+}: {
+  route: any;
+  navigation: any;
+}) => {
   const { imageUri, imageUrl } = route.params || {}; // Recibe ambos parámetros
 
-  const labels = ['1', '2', '3'];
+  const labels = ["1", "2", "3"];
 
   // Imprimir en consola los valores de imageUri e imageUrl
-  console.log('imageUrl:', imageUrl);
+  console.log("imageUrl:", imageUrl);
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.title}>Evaluación</Text>
-        <Text style={styles.subtitle}>Maíz</Text>
+      {/* Header con título y subtítulo */}
+      <View style={styles.headerEvaluation}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Evaluación</Text>
+          <Text style={styles.subtitle}>Maíz</Text>
+        </View>
+        <Image
+          source={require("@/assets/images/Plantas/Corn.webp")}
+          style={styles.imageHeader}
+        />
       </View>
 
       {/* Step Indicator */}
@@ -36,7 +48,9 @@ const RemoveBackground = ({ route, navigation }: { route: any; navigation: any }
             resizeMode="contain"
           />
         ) : (
-          <Text style={styles.noImageText}>No se seleccionó ninguna imagen</Text>
+          <Text style={styles.noImageText}>
+            No se seleccionó ninguna imagen
+          </Text>
         )}
       </View>
 
@@ -50,7 +64,12 @@ const RemoveBackground = ({ route, navigation }: { route: any; navigation: any }
         />
         <MainButton
           title="Siguiente"
-          onPress={() => navigation.navigate('ClassificationModelScreen', { imageUri, imageUrl })} // Pasar parámetros
+          onPress={() =>
+            navigation.navigate("ClassificationModelScreen", {
+              imageUri,
+              imageUrl,
+            })
+          } // Pasar parámetros
           variant="primary"
         />
       </View>
@@ -62,53 +81,68 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
   },
   header: {
-    alignItems: 'center',
+    marginHorizontal: 10,
     marginBottom: 20,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
   },
   subtitle: {
     fontSize: 18,
-    color: '#007ACC',
+    color: "#007ACC",
   },
   stepIndicator: {
     marginVertical: 20,
   },
   instruction: {
     fontSize: 16,
-    fontWeight: '600',
-    textAlign: 'center',
+    fontWeight: "600",
+    textAlign: "center",
     marginVertical: 20,
-    color: '#333',
+    color: "#333",
   },
   imageContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginVertical: 20,
   },
   image: {
-    width: '90%',
+    width: "90%",
     height: 200,
     borderRadius: 10,
   },
   noImageText: {
     fontSize: 16,
-    color: '#888',
-    fontStyle: 'italic',
+    color: "#888",
+    fontStyle: "italic",
   },
   footerButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 'auto',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: "auto",
   },
   cancelButton: {
+    marginRight: 10,
+  },
+  imageHeader: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    borderWidth: 2,
+    borderColor: '#00a8cc',
+    marginBottom: 4,
+  },
+  headerEvaluation: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
     marginRight: 10,
   },
 });

@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { View, Text, Alert } from 'react-native';
-import StepIndicatorComponent from '../components/pagination/StepIndicatorComponent';
-import UploadButton from '../components/buttons/UploadButton';
-import TakePhotoButton from '../components/buttons/TakePhotoButton';
-import MainButton from '../components/buttons/MainButton';
-import ImagePreview from './ImagePreview';
-import ModalInformation from '../components/Modals/ModalInformation';
-import * as ImagePicker from 'expo-image-picker';
-import { styles } from './styles/UploadImagenScreenStyle';
-import { uploadImageToOBS } from '../utils/uploadImage';
+import React, { useState } from "react";
+import { View, Text, Alert, Image } from "react-native";
+import StepIndicatorComponent from "../components/pagination/StepIndicatorComponent";
+import UploadButton from "../components/buttons/UploadButton";
+import TakePhotoButton from "../components/buttons/TakePhotoButton";
+import MainButton from "../components/buttons/MainButton";
+import ImagePreview from "./ImagePreview";
+import ModalInformation from "../components/Modals/ModalInformation";
+import * as ImagePicker from "expo-image-picker";
+import { styles } from "./styles/UploadImagenScreenStyle";
+import { uploadImageToOBS } from "../utils/uploadImage";
 
 const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
   const [images, setImages] = useState<string[]>([]);
   const [uploadedUrls, setUploadedUrls] = useState<string[]>([]); // URLs de imágenes subidas
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const labels = ['1', '2', '3'];
+  const labels = ["1", "2", "3"];
 
   const handleImageSelection = (uri: string) => {
     setImages((prevImages) => [...prevImages, uri]);
@@ -39,7 +39,10 @@ const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
   const takePhoto = async () => {
     const permission = await ImagePicker.requestCameraPermissionsAsync();
     if (!permission.granted) {
-      Alert.alert('Permiso denegado', 'Se requiere permiso para acceder a la cámara');
+      Alert.alert(
+        "Permiso denegado",
+        "Se requiere permiso para acceder a la cámara"
+      );
       return;
     }
 
@@ -55,7 +58,7 @@ const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
   // Subir imágenes a OBS usando la API REST
   const handleUploadToOBS = async () => {
     if (images.length === 0) {
-      Alert.alert('Error', 'No hay imágenes seleccionadas');
+      Alert.alert("Error", "No hay imágenes seleccionadas");
       return;
     }
 
@@ -67,13 +70,16 @@ const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
 
       const urls = await Promise.all(uploadPromises); // Espera a que todas las imágenes se suban
       setUploadedUrls(urls); // Guarda los URLs en el estado
-      Alert.alert('Éxito', 'Todas las imágenes se han subido correctamente');
+      Alert.alert("Éxito", "Todas las imágenes se han subido correctamente");
 
       // Redirigir a la siguiente pantalla con el primer URL
-      navigation.navigate('RemoveBackground', { imageUri: images[0], imageUrl: urls[0] });
+      navigation.navigate("RemoveBackground", {
+        imageUri: images[0],
+        imageUrl: urls[0],
+      });
       setImages([]); // Limpiar el estado de imágenes después de subirlas
     } catch (error) {
-      Alert.alert('Error', 'Hubo un problema al subir las imágenes');
+      Alert.alert("Error", "Hubo un problema al subir las imágenes");
       console.error(error);
     }
   };
@@ -86,15 +92,21 @@ const UploadImagenScreen = ({ navigation }: { navigation: any }) => {
   // Confirmar la acción en el modal
   const handleConfirmCancel = () => {
     setIsModalVisible(false);
-    navigation.navigate('Home');
+    navigation.navigate("Home");
   };
 
   return (
     <View style={styles.container}>
       {/* Header con título y subtítulo */}
-      <View style={styles.header}>
-        <Text style={styles.title}>Evaluación</Text>
-        <Text style={styles.subtitle}>Maíz</Text>
+      <View style={styles.headerEvaluation}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Evaluación</Text>
+          <Text style={styles.subtitle}>Maíz</Text>
+        </View>
+        <Image
+          source={require("@/assets/images/Plantas/Corn.webp")}
+          style={styles.imageHeader}
+        />
       </View>
 
       {/* Step Indicator */}

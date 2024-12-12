@@ -4,6 +4,8 @@ import AppNavigator from './AppNavigator'; // Asegúrate de la ruta correcta
 import MainLayout from './src/layout/MainLayout';
 import { AuthProvider } from './src/context/AuthContext';
 
+import { BASE_URL } from '@env';
+
 const App = () => {
   return (
   <AuthProvider > 
