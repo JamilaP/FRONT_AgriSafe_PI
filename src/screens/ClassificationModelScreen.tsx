@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { LOCALHOST, OBS_ENDPOINT } from '@env';
 import {
   View,
   Text,
@@ -10,9 +11,6 @@ import {
 import StepIndicatorComponent from '../components/pagination/StepIndicatorComponent';
 import SeverityIndicator from '../components/SeverityIndicator';
 import MainButton from '../components/buttons/MainButton';
-
-// importar variables de entorno
-import { LOCALHOST, OBS_ENDPOINT } from '@env';
 
 const ClassificationModelScreen = ({ route, navigation }: { route: any; navigation: any }) => {
   let { imageUri, imageUrl } = route.params || {}; // Recibe parámetros del paso anterior
