@@ -6,6 +6,7 @@ export const diagnosesScreenStyles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 20,
     backgroundColor: '#F8F8F8',
+    paddingTop: 70,
   },
   title: {
     fontSize: 24,
