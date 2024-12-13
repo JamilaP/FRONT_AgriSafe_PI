@@ -30,9 +30,9 @@ const ProfileScreen = () => {
     name?: string;
     base64?: string;
   } | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  // Cargar el perfil del usuario al inicio
+  /* Cargar el perfil del usuario al inicio
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
@@ -52,7 +52,7 @@ const ProfileScreen = () => {
 
     fetchUserProfile();
   }, []);
-
+*/
   if (loading) {
     return (
       <View style={styles.container}>

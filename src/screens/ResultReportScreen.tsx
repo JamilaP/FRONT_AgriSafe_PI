@@ -6,13 +6,12 @@ import MainButton from "../components/buttons/MainButton";
 
 const ResultReportScreen = ({
   navigation,
-  router,
+  route,
 }: {
   navigation: any;
-  router: any;
+  route: any;
 }) => {
-  const [infection_percentage, setInfection_percentage] =
-    useState<number>(12.2); // Porcentaje de infección
+  const { infection_percentage, grade } = route.params; 
   const data = [
     { grade: 0, range: "0%", color: "#649726" },
     { grade: 1, range: "0 - 5%", color: "#7FBE31" },
@@ -25,7 +24,7 @@ const ResultReportScreen = ({
   // Determinar el grado en base al porcentaje de infección
   const gradeInfo =
     data.find((item) => {
-      if (item.grade === 0 && infection_percentage === 0) return true; // Para el grado 0
+      if (Math.floor(item.grade) === 0 && infection_percentage === 0) return true; // Para el grado 0
       if (item.grade === 1 && infection_percentage <= 5) return true;
       if (
         item.grade === 2 &&
@@ -75,9 +74,7 @@ const ResultReportScreen = ({
             <View style={styles.resultCard}>
               <Text style={styles.resultText}>Porcentaje afectado</Text>
               <View style={styles.cardResult}>
-                <Text style={styles.resultCardText}>
-                  {infection_percentage}%
-                </Text>
+                <Text style={styles.resultCardText}>{infection_percentage}%</Text>
               </View>
             </View>
             <View style={styles.resultCard}>
@@ -85,12 +82,13 @@ const ResultReportScreen = ({
               <View
                 style={[
                   styles.cardResult,
-                  { backgroundColor: gradeInfo.color },
+                  { backgroundColor: data[grade]?.color || "#0891B2" }, // Color según el grado
                 ]}
               >
-                <Text style={styles.resultCardText}>{gradeInfo.grade}</Text>
+                <Text style={styles.resultCardText}>{grade}</Text>
               </View>
             </View>
+
           </View>
           <Text style={styles.resultText}>
             La Roya es una enfermedad causada por el hongo Puccinia polysora,

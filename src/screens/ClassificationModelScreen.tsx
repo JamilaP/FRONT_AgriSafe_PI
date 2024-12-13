@@ -38,7 +38,7 @@ const ClassificationModelScreen = ({
   // Determinar el grado en base al porcentaje de infección
   const gradeInfo =
     data.find((item) => {
-      if (item.grade === 0 && infection_percentage === 0) return true; // Para el grado 0
+      if (Math.floor(item.grade) === 0 && infection_percentage === 0) return true; // Para el grado 0
       if (item.grade === 1 && infection_percentage <= 5) return true;
       if (
         item.grade === 2 &&
@@ -200,6 +200,7 @@ const ClassificationModelScreen = ({
               imageUri,
               imageUrl,
               infection_percentage,
+              grade: gradeInfo.grade, // Pasar el grado de severidad
             })
           }
           variant="primary"
