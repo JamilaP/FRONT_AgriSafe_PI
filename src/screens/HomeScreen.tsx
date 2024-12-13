@@ -16,6 +16,14 @@ const HomeScreen = () => {
   const [selectedDisease, setSelectedDisease] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
 
+  const diseaseImages = {
+    Blight: require('../../assets/images/Diseases/Blight.jpeg'),
+    CommonRust: require('../../assets/images/Diseases/CommonRust.jpeg'),
+    GrayLeafSpot: require('../../assets/images/Diseases/GrayLeafSpot.jpg'),
+    Healthy: require('../../assets/images/Diseases/Healthy.jpeg'),
+  };
+  
+
   // Obtener enfermedades de la API
   useEffect(() => {
     const fetchDiseases = async () => {
@@ -76,9 +84,7 @@ const HomeScreen = () => {
             title={item.name}
             description={item.description}
             imageSource={
-              item.example_images && item.example_images.trim() !== ''
-                ? item.example_images
-                : require('@/assets/images/diseases.jpeg')
+              diseaseImages[item.name] || require('../../assets/images/diseases.jpeg') // Imagen por defecto si no se encuentra
             }
             onPress={() => handleDiseaseSelect(item.disease_id)}
           />
